@@ -37,6 +37,7 @@ fun AddressItem(
     address: Address,
     searchString: String = "",
     navigateToVoiceCall: (String) -> Unit,
+    navigateToVedioCall: (String) -> Unit
 ) {
 
     var isClicked by remember {
@@ -146,7 +147,10 @@ fun AddressItem(
                     contentDescription = "IC_PHONE",
                     modifier = Modifier
                         .size(30.dp)
-                        .align(Alignment.Center),
+                        .align(Alignment.Center)
+                        .clickable {
+                            navigateToVedioCall(address.phone)
+                        },
                 )
             }
 

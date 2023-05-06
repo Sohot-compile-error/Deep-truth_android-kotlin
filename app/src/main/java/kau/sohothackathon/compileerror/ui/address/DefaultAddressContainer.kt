@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
@@ -19,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kau.sohothackathon.compileerror.data.model.Address
+import kau.sohothackathon.compileerror.ui.theme.Main
 import kau.sohothackathon.compileerror.ui.theme.SubGray
 
 @Composable
@@ -27,7 +29,8 @@ fun DefaultAddressContainer(
     updateSearch: (String) -> Unit,
     addresses: List<Address>,
     filteredAddresses: List<Address>,
-    navigateToVoiceCall: (String) -> Unit
+    navigateToVoiceCall: (String) -> Unit,
+    navigateToVedioCall: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -82,30 +85,49 @@ fun DefaultAddressContainer(
             fontSize = 13.sp,
             modifier = Modifier.padding(start = 30.dp, bottom = 5.dp)
         )
+        if (addresses.isEmpty()) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally),
+                    color = Main
+                )
+            }
 
-        /** 연락처 모음 */
-        LazyColumn(
-            modifier = Modifier
-                .weight(1f),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
-        ) {
-            if (search.isEmpty()) {
-                items(addresses) { address ->
-                    AddressItem(
-                        address = address,
-                        searchString = search,
-                        navigateToVoiceCall = navigateToVoiceCall
-                    )
-                }
-            } else {
-                items(filteredAddresses) { address ->
-                    AddressItem(
-                        address = address,
-                        searchString = search,
-                        navigateToVoiceCall = navigateToVoiceCall
-                    )
+        } else {
+            /** 연락처 모음 */
+            LazyColumn(
+                modifier = Modifier
+                    .weight(1f),
+                verticalArrangement = Arrangement.spacedBy(20.dp)
+            ) {
+                if (search.isEmpty()) {
+                    items(addresses) { address ->
+                        AddressItem(
+                            address = address,
+                            searchString = search,
+                            navigateToVoiceCall = navigateToVoiceCall,
+                            navigateToVedioCall = navigateToVedioCall
+                        )
+                    }
+                } else {
+                    items(filteredAddresses) { address ->
+                        AddressItem(
+                            address = address,
+                            searchString = search,
+                            navigateToVoiceCall = navigateToVoiceCall,
+                            navigateToVedioCall = navigateToVedioCall
+                        )
+                    }
                 }
             }
         }
     }
+
 }
