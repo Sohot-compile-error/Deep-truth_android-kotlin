@@ -1,6 +1,5 @@
 package kau.sohothackathon.compileerror.ui.voice
 
-import android.content.Context
 import android.media.*
 import android.os.Environment
 import androidx.compose.foundation.Image
@@ -10,8 +9,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -21,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.LinearGradient
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,11 +29,16 @@ import kau.sohothackathon.compileerror.R
 import kau.sohothackathon.compileerror.ui.model.ApplicationState
 import kau.sohothackathon.compileerror.ui.theme.Black
 import kau.sohothackathon.compileerror.ui.theme.Red
+import kau.sohothackathon.compileerror.ui.voice.helper.AudioCutter
+import kau.sohothackathon.compileerror.ui.voice.helper.AudioCutter.cutAudio
 import kau.sohothackathon.compileerror.ui.voice.helper.RecordingThread
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.*
+import kotlin.math.sin
 
 
 @Composable
@@ -47,28 +48,29 @@ fun VoiceCallScreen(appState: ApplicationState) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val ouputPlayer: MediaPlayer =
-        MediaPlayer.create(context, R.raw.levitating)
+        MediaPlayer.create(context, R.raw.songdongho_test)
 
+    val outputDirectory =
+        File(context.getExternalFilesDir(Environment.DIRECTORY_MUSIC), "input")
+    outputDirectory.mkdirs()
+    val noiseFile = context.resources.openRawResource(R.raw.noise2)
+    val tempFile = File.createTempFile("prefix", ".mp3", context.cacheDir)
+    FileOutputStream(tempFile).use { outputStream ->
+        noiseFile.copyTo(outputStream)
+    }
+    val thread = RecordingThread(outputDirectory.absolutePath, tempFile)
     DisposableEffect(key1 = Unit) {
-        playVoiceCall(context, ouputPlayer)
+        playVoiceCall(ouputPlayer)
+//        AudioCutter.cutAudio(context, R.raw.levitating)
         viewModel.resetTimer()
         onDispose {
             viewModel.stopTimer()
             ouputPlayer.release()
         }
     }
-    val outputDirectory =
-        File(context.getExternalFilesDir(Environment.DIRECTORY_MUSIC), "input")
-    outputDirectory.mkdirs()
-    val mp3InputStream = context.resources.openRawResource(R.raw.time_is_running_out)
-    val tempFile = File.createTempFile("prefix", ".mp3", context.cacheDir)
-    FileOutputStream(tempFile).use { outputStream ->
-        mp3InputStream.copyTo(outputStream)
-    }
-    val thread = RecordingThread(outputDirectory.absolutePath, tempFile)
 
     LaunchedEffect(key1 = Unit) {
-        delay(3000L)
+        delay(8000L)
         viewModel.updateIsDetected(true)
     }
 
@@ -86,7 +88,7 @@ fun VoiceCallScreen(appState: ApplicationState) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "010-2465-1235",
+            text = "송동호 교수님",
             color = Color.White,
             modifier = Modifier.padding(top = 50.dp),
             fontSize = 36.sp,
@@ -308,6 +310,11 @@ fun VoiceCallScreen(appState: ApplicationState) {
                             .size(75.dp)
                             .clip(CircleShape)
                             .clickable {
+                                scope.launch {
+                                    thread.start()
+                                    delay(5000L)
+                                    thread.stopRecording()
+                                }
                             }
                             .background(Color.White.copy(alpha = 0.6f))
                     ) {
@@ -372,7 +379,7 @@ fun VoiceCallScreen(appState: ApplicationState) {
 }
 
 
-fun playVoiceCall(context: Context, mediaPlayer: MediaPlayer) {
+fun playVoiceCall(mediaPlayer: MediaPlayer) {
     try {
         mediaPlayer.start()
         mediaPlayer.setOnCompletionListener { mediaPlayer -> mediaPlayer.release() }

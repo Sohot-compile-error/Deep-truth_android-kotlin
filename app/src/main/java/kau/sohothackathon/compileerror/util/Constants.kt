@@ -6,7 +6,7 @@ object Constants {
     const val ONBOARD_ROUTE = "nav-onboard"
     const val ADDRESS_ROUTE = "nav-address"
     const val VOICE_CALL_ROUTE = "nav-voice-call"
-    const val VIDEO_VALL_ROUTE = "nav-video-call"
+    const val VIDEO_CALL_ROUTE = "nav-video-call"
 
     // Graphs
     const val ADDRESS_GRAPH = "address_graph"
