@@ -8,7 +8,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,7 +17,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kau.sohothackathon.compileerror.R
-import kau.sohothackathon.compileerror.data.model.Address
 import kau.sohothackathon.compileerror.ui.theme.Black
 import kau.sohothackathon.compileerror.ui.theme.Gray
 
@@ -28,6 +26,7 @@ fun DialBottomSheetContent(
     phoneSearch: String,
     updatePhoneSearch: (Char) -> Unit,
     deletePhoneSearch: () -> Unit,
+    naivageToVoiceCall: (String) -> Unit,
 ) {
 
     val regex = "(\\d{2,3})(\\d{3,4})(\\d{4})".toRegex()  // 정규식을 이용하여 숫자를 그룹화합니다.

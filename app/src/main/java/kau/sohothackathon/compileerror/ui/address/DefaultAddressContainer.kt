@@ -26,7 +26,8 @@ fun DefaultAddressContainer(
     search: String,
     updateSearch: (String) -> Unit,
     addresses: List<Address>,
-    filteredAddresses: List<Address>
+    filteredAddresses: List<Address>,
+    navigateToVoiceCall: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -90,11 +91,19 @@ fun DefaultAddressContainer(
         ) {
             if (search.isEmpty()) {
                 items(addresses) { address ->
-                    AddressItem(address, search)
+                    AddressItem(
+                        address = address,
+                        searchString = search,
+                        navigateToVoiceCall = navigateToVoiceCall
+                    )
                 }
             } else {
                 items(filteredAddresses) { address ->
-                    AddressItem(address, search)
+                    AddressItem(
+                        address = address,
+                        searchString = search,
+                        navigateToVoiceCall = navigateToVoiceCall
+                    )
                 }
             }
         }

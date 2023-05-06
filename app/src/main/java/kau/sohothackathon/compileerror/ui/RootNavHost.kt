@@ -11,7 +11,9 @@ import kau.sohothackathon.compileerror.ui.graph.addressGraph
 import kau.sohothackathon.compileerror.ui.graph.onboardGraph
 import kau.sohothackathon.compileerror.ui.model.ApplicationState
 import kau.sohothackathon.compileerror.ui.splash.SplashScreen
+import kau.sohothackathon.compileerror.ui.voice.VoiceCallScreen
 import kau.sohothackathon.compileerror.util.Constants.SPLASH_ROUTE
+import kau.sohothackathon.compileerror.util.Constants.VOICE_CALL_ROUTE
 
 @Composable
 fun RootNavhost(appState: ApplicationState) {
@@ -30,6 +32,10 @@ fun RootNavhost(appState: ApplicationState) {
                 }
                 onboardGraph(appState)
                 addressGraph(appState)
+
+//                composable(VIDEO_VALL_ROUTE) {
+//                    VoiceCallScreen(appState)
+//                }
             }
         }
     }

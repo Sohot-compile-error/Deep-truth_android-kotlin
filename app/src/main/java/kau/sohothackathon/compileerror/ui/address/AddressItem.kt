@@ -33,7 +33,11 @@ import kau.sohothackathon.compileerror.ui.theme.Gray
 import kau.sohothackathon.compileerror.ui.theme.Main
 
 @Composable
-fun AddressItem(address: Address, searchString: String = "") {
+fun AddressItem(
+    address: Address,
+    searchString: String = "",
+    navigateToVoiceCall: (String) -> Unit,
+) {
 
     var isClicked by remember {
         mutableStateOf(false)
@@ -157,7 +161,10 @@ fun AddressItem(address: Address, searchString: String = "") {
                     contentDescription = "IC_PHONE",
                     modifier = Modifier
                         .size(30.dp)
-                        .align(Alignment.Center),
+                        .align(Alignment.Center)
+                        .clickable {
+                            navigateToVoiceCall(address.phone)
+                        },
                 )
             }
 

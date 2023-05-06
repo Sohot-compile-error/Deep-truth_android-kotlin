@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import kau.sohothackathon.compileerror.R
 import kau.sohothackathon.compileerror.ui.model.ApplicationState
 import kau.sohothackathon.compileerror.ui.theme.*
+import kau.sohothackathon.compileerror.util.Constants.VOICE_CALL_ROUTE
 import kotlinx.coroutines.launch
 
 @Composable
@@ -27,6 +28,9 @@ fun AddressScreen(appState: ApplicationState) {
     val context = LocalContext.current
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
     val scope = rememberCoroutineScope()
+    val navigateToVoiceCall: (String) -> Unit = {
+        appState.navigate(VOICE_CALL_ROUTE)
+    }
 
     LaunchedEffect(key1 = Unit) {
         viewModel.getAllContacts(context)
@@ -45,6 +49,7 @@ fun AddressScreen(appState: ApplicationState) {
                 phoneSearch = viewModel.phoneSearch.value,
                 updatePhoneSearch = viewModel::updatePhoneSearch,
                 deletePhoneSearch = viewModel::deletePhoneSearch,
+                naivageToVoiceCall = navigateToVoiceCall,
             )
         }) {
         Box(
@@ -59,6 +64,7 @@ fun AddressScreen(appState: ApplicationState) {
                     updateSearch = viewModel::updateSearch,
                     addresses = viewModel.addresses,
                     filteredAddresses = viewModel.filteredAddresses.value,
+                    navigateToVoiceCall = navigateToVoiceCall,
                 )
                 FloatingActionButton(
                     modifier = Modifier
@@ -84,11 +90,19 @@ fun AddressScreen(appState: ApplicationState) {
                 ) {
                     if (viewModel.phoneSearch.value.isEmpty()) {
                         items(viewModel.addresses) { address ->
-                            AddressItem(address, viewModel.phoneSearch.value)
+                            AddressItem(
+                                address = address,
+                                searchString = viewModel.phoneSearch.value,
+                                navigateToVoiceCall = navigateToVoiceCall
+                            )
                         }
                     } else {
                         items(viewModel.phonefilteredAddresses.value) { address ->
-                            AddressItem(address, viewModel.phoneSearch.value)
+                            AddressItem(
+                                address = address,
+                                searchString = viewModel.phoneSearch.value,
+                                navigateToVoiceCall = navigateToVoiceCall
+                            )
                         }
                     }
                 }

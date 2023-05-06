@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kau.sohothackathon.compileerror.data.model.Address
 import kau.sohothackathon.compileerror.domain.AddressRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,7 +26,7 @@ class AddressViewModel @Inject constructor(
     val search: State<String> get() = _search
     private val _phoneSearch = mutableStateOf("")
     val phoneSearch: State<String> get() = _phoneSearch
-    fun getAllContacts(context: Context) = viewModelScope.launch {
+    fun getAllContacts(context: Context) = viewModelScope.launch(Dispatchers.Default) {
         addresses.addAll(addressRepository.fetchAllContacts(context).sortedBy { it.name })
     }
 
