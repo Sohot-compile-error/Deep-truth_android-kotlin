@@ -30,9 +30,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kau.sohothackathon.compileerror.R
 import kau.sohothackathon.compileerror.ui.model.ApplicationState
+import kau.sohothackathon.compileerror.ui.model.MediaType
 import kau.sohothackathon.compileerror.ui.theme.Black
 import kau.sohothackathon.compileerror.ui.theme.Red
-import kau.sohothackathon.compileerror.ui.voice.helper.AudioCutter
+import kau.sohothackathon.compileerror.ui.voice.helper.MediaCutter
 import kau.sohothackathon.compileerror.ui.voice.helper.VoiceRecordingThread
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -63,7 +64,15 @@ fun VoiceCallScreen(appState: ApplicationState) {
     DisposableEffect(key1 = Unit) {
         // TODO 서버로부터 음원 받기 -> 현재 로컬에서 작동 중
         playVoiceCall(ouputPlayer) // 음원 플레이
-        AudioCutter.cutAudio(context, R.raw.levitating) // 음원 나누기
+        MediaCutter.cutMedia(
+            context = context,
+            resourceId = R.raw.levitating,
+            type = MediaType.AUDIO,
+            resultCallBack = {
+                if (it == 1) viewModel.updateIsDetected(false)
+                else viewModel.updateIsDetected(true)
+            }
+        ) // 음원 나누기
         viewModel.resetTimer()
         onDispose {
             viewModel.stopTimer()

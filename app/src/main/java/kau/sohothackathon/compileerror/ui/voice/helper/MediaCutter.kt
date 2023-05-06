@@ -7,21 +7,24 @@ import android.os.Environment
 import android.util.Log
 import com.arthenica.mobileffmpeg.Config
 import com.arthenica.mobileffmpeg.FFmpeg
+import kau.sohothackathon.compileerror.ui.model.MediaType
 import java.io.File
 import java.io.FileOutputStream
 
 
-object AudioCutter {
+object MediaCutter {
 
     /**
      * @param resourceId 리소스 id를 입력합니다 -> 후에 통화 녹음파일로 대체될 예정
      * @param segmentDuration 자를 단위를 ms 단위로 입력합니다.
      * context와 resourceId를 받아 해당 리소스를 단위기준로 자릅니다.
      */
-    fun cutAudio(
+    fun cutMedia(
         context: Context,
         resourceId: Int,
-        segmentDuration: Long = 10000L
+        type: MediaType,
+        resultCallBack: (Int) -> Unit,
+        segmentDuration: Long = 10000L,
     ) {
         // 1. R.raw에서 mp3 파일을 로드합니다.
         val mp3InputStream = context.resources.openRawResource(resourceId)
@@ -81,6 +84,8 @@ object AudioCutter {
                         context as Activity,
                         s3fileName,
                         outputFile,
+                        type,
+                        resultCallBack
                     )
                 }
             }

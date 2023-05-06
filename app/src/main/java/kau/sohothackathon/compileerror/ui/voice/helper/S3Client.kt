@@ -12,7 +12,7 @@ import com.amazonaws.regions.Region
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3Client
 import kau.sohothackathon.compileerror.network.DeepFakeRequest
-import kau.sohothackathon.compileerror.network.DeepFakeResponse
+import kau.sohothackathon.compileerror.ui.model.MediaType
 import kau.sohothackathon.compileerror.ui.voice.helper.RetrofitHelper.apiService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -21,7 +21,13 @@ import java.io.File
 
 object S3Client {
 
-    fun upload(activity: Activity, fileName: String, file: File) {
+    fun upload(
+        activity: Activity,
+        fileName: String,
+        file: File,
+        type: MediaType,
+        resultCallBack: (Int) -> Unit
+    ) {
         Log.d("dlgocks1", "upload start")
 
         val awsCredentials: AWSCredentials =
@@ -48,21 +54,27 @@ object S3Client {
                     Log.d("dlgocks1", "upload Complete $id")
                     GlobalScope.launch {
                         try {
-                            val response =
-                                apiService.sendAudioFile(
+                            val response = when (type) {
+                                MediaType.AUDIO -> apiService.sendAudioFile(
                                     deepFakeRequest =
                                     DeepFakeRequest("sohot/voicecall-deepfake-detection/${fileName}")
                                 )
+                                MediaType.VIDEO -> apiService.sendVedopFile(
+                                    deepFakeRequest =
+                                    DeepFakeRequest("sohot/voicecall-deepfake-detection/${fileName}")
+                                )
+                            }
+
                             if (response.isSuccessful) {
                                 val exampleData = response.body()
                                 Log.d("dlgocks1 - retrofit2 response", exampleData.toString())
-                                // 성공 처리 코드 작성
+                                exampleData?.let {
+                                    resultCallBack(it.predictionRate)
+                                }
                             } else {
                                 Log.d("dlgocks1 - retrofit2 response - fail", response.toString())
-                                // 실패 처리 코드 작성
                             }
                         } catch (e: Exception) {
-                            // 예외 처리 코드 작성
                             Log.d("dlgocks1 - retrofit2 response - fail", e.toString())
                         }
                     }

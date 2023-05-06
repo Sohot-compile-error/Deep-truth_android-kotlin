@@ -1,15 +1,11 @@
 package kau.sohothackathon.compileerror.ui.vedio
 
-import android.graphics.Matrix
 import android.net.Uri
-import android.view.Surface
 import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -32,15 +28,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContextCompat
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
 import kau.sohothackathon.compileerror.R
 import kau.sohothackathon.compileerror.ui.model.ApplicationState
+import kau.sohothackathon.compileerror.ui.model.MediaType
 import kau.sohothackathon.compileerror.ui.theme.Black
 import kau.sohothackathon.compileerror.ui.theme.Red
+import kau.sohothackathon.compileerror.ui.voice.helper.MediaCutter
 import kotlinx.coroutines.delay
 
 @Composable
@@ -59,6 +56,15 @@ fun VedioCallScreen(appState: ApplicationState) {
 
     DisposableEffect(key1 = Unit) {
         player.setMediaItem(mediaItem)
+        MediaCutter.cutMedia(
+            context = context,
+            resourceId = R.raw.test_vedio,
+            type = MediaType.VIDEO,
+            resultCallBack = {
+                if (it == 1) isDialog = false
+                else isDialog = false
+            }
+        ) // 음원 나누기
         player.prepare()
         player.play()
         onDispose {

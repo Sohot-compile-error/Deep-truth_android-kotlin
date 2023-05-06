@@ -41,7 +41,6 @@ class VideoRecordingThread(
     private fun startRecording() {
         inputPlayer = MediaRecorder()
 
-
         val outputFile = File(filePath, fileName)
         outputFile.createNewFile()
         inputPlayer?.apply {
