@@ -47,16 +47,29 @@ class MainActivity : ComponentActivity() {
             ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.READ_CONTACTS
+            ) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(
                     Manifest.permission.RECORD_AUDIO,
-                    Manifest.permission.READ_CONTACTS
+                    Manifest.permission.READ_CONTACTS,
+                    Manifest.permission.CAMERA
                 ),
                 1004
             )
         }
+    }
+
+    companion object {
+        private val REQUEST_RECORD_AUDIO = 13
+        private val AUDIO_LEN_IN_SECOND = 5
+        val SAMPLE_RATE = 16000
+        val RECORDING_LENGTH = SAMPLE_RATE * AUDIO_LEN_IN_SECOND
+        private val LOG_TAG = MainActivity::class.java.simpleName
     }
 }
