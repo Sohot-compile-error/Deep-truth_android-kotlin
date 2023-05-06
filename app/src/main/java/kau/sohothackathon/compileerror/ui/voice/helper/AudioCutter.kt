@@ -44,9 +44,8 @@ object AudioCutter {
                 ?.toLong()
                 ?: 0
 
-        // 3. MobileFFmpeg 라이브러리를 사용하여 임시 파일을 10초 단위로 자릅니다.
-//        for (startTime in 0 until duration step segmentDuration) {
-        for (startTime in 0 until 20000L step segmentDuration) {
+        // 3. MobileFFmpeg 라이브러리를 사용하여 파일을 10초 단위로 자릅니다.
+        for (startTime in 0 until duration step segmentDuration) {
             val endTime =
                 if (startTime + segmentDuration < duration) startTime + segmentDuration else duration
 

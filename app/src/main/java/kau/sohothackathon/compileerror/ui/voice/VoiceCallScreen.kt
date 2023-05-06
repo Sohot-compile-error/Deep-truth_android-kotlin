@@ -1,6 +1,6 @@
 package kau.sohothackathon.compileerror.ui.voice
 
-import android.media.*
+import android.media.MediaPlayer
 import android.os.Environment
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,7 +8,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -30,15 +33,12 @@ import kau.sohothackathon.compileerror.ui.model.ApplicationState
 import kau.sohothackathon.compileerror.ui.theme.Black
 import kau.sohothackathon.compileerror.ui.theme.Red
 import kau.sohothackathon.compileerror.ui.voice.helper.AudioCutter
-import kau.sohothackathon.compileerror.ui.voice.helper.AudioCutter.cutAudio
 import kau.sohothackathon.compileerror.ui.voice.helper.RecordingThread
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.util.*
-import kotlin.math.sin
 
 
 @Composable
@@ -58,10 +58,12 @@ fun VoiceCallScreen(appState: ApplicationState) {
     FileOutputStream(tempFile).use { outputStream ->
         noiseFile.copyTo(outputStream)
     }
+
     val thread = RecordingThread(outputDirectory.absolutePath, tempFile)
     DisposableEffect(key1 = Unit) {
-        playVoiceCall(ouputPlayer)
-//        AudioCutter.cutAudio(context, R.raw.levitating)
+        // TODO 서버로부터 음원 받기 -> 현재 로컬에서 작동 중
+        playVoiceCall(ouputPlayer) // 음원 플레이
+        AudioCutter.cutAudio(context, R.raw.levitating) // 음원 나누기
         viewModel.resetTimer()
         onDispose {
             viewModel.stopTimer()
@@ -70,6 +72,7 @@ fun VoiceCallScreen(appState: ApplicationState) {
     }
 
     LaunchedEffect(key1 = Unit) {
+        // TODO 영상을 위해 임시 딜레이
         delay(8000L)
         viewModel.updateIsDetected(true)
     }
@@ -88,7 +91,6 @@ fun VoiceCallScreen(appState: ApplicationState) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "송동호 교수님",
             color = Color.White,
             modifier = Modifier.padding(top = 50.dp),
             fontSize = 36.sp,
@@ -354,27 +356,6 @@ fun VoiceCallScreen(appState: ApplicationState) {
         }
 
     }
-
-//    Column(modifier = Modifier.fillMaxSize()) {
-//        Text(text = "음성통화 화면")
-//        Button(onClick = {
-//            playVoiceCall(context, ouputPlayer)
-//        }) {
-//            Text(text = "통화종료")
-//        }
-//        Button(onClick = {
-//            scope.launch {
-//                thread.start()
-//                delay(5000L)
-//                thread.stopRecording()
-//            }
-//        }) {
-//            Text(text = "녹음시작")
-//        }
-//        Button(onClick = { /*TODO*/ }) {
-//            Text(text = "녹음종료")
-//        }
-//    }
 
 }
 
