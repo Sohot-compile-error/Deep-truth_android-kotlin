@@ -13,7 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import kau.sohothackathon.compileerror.R
-import kau.sohothackathon.compileerror.RecordingThread
+import kau.sohothackathon.compileerror.ui.voice.helper.RecordingThread
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File

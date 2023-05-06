@@ -1,4 +1,4 @@
-package kau.sohothackathon.compileerror
+package kau.sohothackathon.compileerror.ui.voice.helper
 
 import android.media.MediaMetadataRetriever
 import android.media.MediaRecorder
