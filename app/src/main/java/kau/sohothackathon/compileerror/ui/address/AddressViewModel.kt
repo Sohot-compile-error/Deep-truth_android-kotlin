@@ -27,6 +27,7 @@ class AddressViewModel @Inject constructor(
     private val _phoneSearch = mutableStateOf("")
     val phoneSearch: State<String> get() = _phoneSearch
     fun getAllContacts(context: Context) = viewModelScope.launch(Dispatchers.Default) {
+        addresses.clear()
         addresses.addAll(addressRepository.fetchAllContacts(context).sortedBy { it.name })
     }
 
