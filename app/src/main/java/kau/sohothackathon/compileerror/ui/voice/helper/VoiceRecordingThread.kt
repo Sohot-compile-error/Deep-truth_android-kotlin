@@ -8,7 +8,7 @@ import android.util.Log
 import java.io.File
 import java.util.*
 
-class RecordingThread(private val filePath: String, private val noiseFile: File) : Thread() {
+class VoiceRecordingThread(private val filePath: String, private val noiseFile: File) : Thread() {
     private var inputPlayer: MediaRecorder? = null
     private lateinit var fileName: String
     private var isRunning = true

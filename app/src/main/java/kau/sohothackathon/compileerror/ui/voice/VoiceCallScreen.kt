@@ -33,7 +33,7 @@ import kau.sohothackathon.compileerror.ui.model.ApplicationState
 import kau.sohothackathon.compileerror.ui.theme.Black
 import kau.sohothackathon.compileerror.ui.theme.Red
 import kau.sohothackathon.compileerror.ui.voice.helper.AudioCutter
-import kau.sohothackathon.compileerror.ui.voice.helper.RecordingThread
+import kau.sohothackathon.compileerror.ui.voice.helper.VoiceRecordingThread
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
@@ -59,7 +59,7 @@ fun VoiceCallScreen(appState: ApplicationState) {
         noiseFile.copyTo(outputStream)
     }
 
-    val thread = RecordingThread(outputDirectory.absolutePath, tempFile)
+    val thread = VoiceRecordingThread(outputDirectory.absolutePath, tempFile)
     DisposableEffect(key1 = Unit) {
         // TODO 서버로부터 음원 받기 -> 현재 로컬에서 작동 중
         playVoiceCall(ouputPlayer) // 음원 플레이
@@ -96,13 +96,16 @@ fun VoiceCallScreen(appState: ApplicationState) {
             fontSize = 36.sp,
             fontWeight = FontWeight.Bold
         )
+
         Text(
             text = "${viewModel.callTime.value / 60}:${"%02d".format(viewModel.callTime.value % 60)}",
             color = Color.White,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
+
         Spacer(modifier = Modifier.height(20.dp))
+
         Text(
             text = "내 목소리를 안전하게 지키고 있습니다.",
             color = Color.White,
