@@ -99,12 +99,12 @@ fun VoiceCallScreen(appState: ApplicationState) {
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            color = Color.White,
-            modifier = Modifier.padding(top = 50.dp),
-            fontSize = 36.sp,
-            fontWeight = FontWeight.Bold
-        )
+//        Text(
+//            color = Color.White,
+//            modifier = Modifier.padding(top = 50.dp),
+//            fontSize = 36.sp,
+//            fontWeight = FontWeight.Bold
+//        )
 
         Text(
             text = "${viewModel.callTime.value / 60}:${"%02d".format(viewModel.callTime.value % 60)}",
