@@ -34,6 +34,10 @@ class MainViewModel @Inject constructor(
     /** 파일 화면 */
     private val _mediaFiles = mutableStateOf(emptyList<MediaFile>())
     val mediaFiles: State<List<MediaFile>> get() = _mediaFiles
+    private val _filteredMediaFiles = mutableStateOf(emptyList<MediaFile>())
+    val filteredMediaFiles: State<List<MediaFile>> get() = _filteredMediaFiles
+    private val _mediaSearch = mutableStateOf("")
+    val mediaSearch: State<String> get() = _mediaSearch
 
     fun getAllContacts(context: Context) = viewModelScope.launch(Dispatchers.Default) {
         if (addresses.isEmpty()) {
@@ -54,6 +58,13 @@ class MainViewModel @Inject constructor(
                 it.phone.contains(_phoneSearch.value.plus(number), ignoreCase = true)
             }
             _phoneSearch.value = _phoneSearch.value.plus(number)
+        }
+    }
+
+    fun updateMediaSearch(mediaSearch: String) {
+        _mediaSearch.value = mediaSearch
+        _filteredMediaFiles.value = _mediaFiles.value.filter {
+            it.name.contains(mediaSearch, ignoreCase = true)
         }
     }
 

@@ -136,7 +136,9 @@ fun AudioPlayScreen(
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )
-                    CircularProgressIndicator()
+                    CircularProgressIndicator(
+                        color = DEEP_TRUTH_BLUE,
+                    )
                 }
                 JudegementStatus.ON_ERROR -> {
                     Text(
