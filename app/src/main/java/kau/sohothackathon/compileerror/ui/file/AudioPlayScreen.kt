@@ -21,17 +21,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kau.sohothackathon.compileerror.R
 import kau.sohothackathon.compileerror.ui.MainViewModel
+import kau.sohothackathon.compileerror.ui.file.model.JudegementStatus
 import kau.sohothackathon.compileerror.ui.model.ApplicationState
 import kau.sohothackathon.compileerror.ui.theme.DEEP_TRUTH_BLUE
 import kotlinx.coroutines.delay
 
-
-enum class JudegementStatus {
-    NOT_START,
-    PROGRESS,
-    ON_ERROR,
-    ON_SUCCESS;
-}
 
 @Composable
 fun AudioPlayScreen(
@@ -189,7 +183,6 @@ fun AudioPlayScreen(
                     )
                 }
             }
-
         }
 
         Icon(
@@ -200,11 +193,6 @@ fun AudioPlayScreen(
                 .align(Alignment.CenterHorizontally)
                 .clickable {
                     isPlay = !isPlay
-                    if (isPlay) {
-//                        viewModel.stop()
-                    } else {
-//                        viewModel.play()
-                    }
                 },
             tint = DEEP_TRUTH_BLUE
         )
