@@ -1,4 +1,4 @@
-package kau.sohothackathon.compileerror.ui
+package kau.sohothackathon.compileerror.ui.components
 
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
@@ -18,9 +18,10 @@ fun rememberApplicationState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
 ) = remember(Unit) {
     ApplicationState(
-        navController,
-        scaffoldState,
-        uiController,
-        coroutineScope,
+        bottomBarState = mutableStateOf(false),
+        navController = navController,
+        scaffoldState = scaffoldState,
+        uiController = uiController,
+        coroutineScope = coroutineScope,
     )
 }

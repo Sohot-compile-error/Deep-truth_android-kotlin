@@ -1,7 +1,6 @@
 package kau.sohothackathon.compileerror.ui.address
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddressViewModel @Inject constructor(
+class MainViewModel @Inject constructor(
     private val addressRepository: AddressRepository
 ) : ViewModel() {
 
@@ -26,9 +25,12 @@ class AddressViewModel @Inject constructor(
     val search: State<String> get() = _search
     private val _phoneSearch = mutableStateOf("")
     val phoneSearch: State<String> get() = _phoneSearch
+
     fun getAllContacts(context: Context) = viewModelScope.launch(Dispatchers.Default) {
-        addresses.clear()
-        addresses.addAll(addressRepository.fetchAllContacts(context).sortedBy { it.name })
+        if (addresses.isEmpty()) {
+            addresses.clear()
+            addresses.addAll(addressRepository.fetchAllContacts(context).sortedBy { it.name })
+        }
     }
 
     fun updatePhoneSearch(number: Char) {

@@ -7,14 +7,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
+import androidx.navigation.compose.currentBackStackEntryAsState
 import dagger.hilt.android.AndroidEntryPoint
 import kau.sohothackathon.compileerror.ui.RootNavhost
-import kau.sohothackathon.compileerror.ui.rememberApplicationState
+import kau.sohothackathon.compileerror.ui.components.ManageBottomBarState
+import kau.sohothackathon.compileerror.ui.components.rememberApplicationState
 import kau.sohothackathon.compileerror.ui.theme.CompileerrorTheme
 
 @AndroidEntryPoint
@@ -28,7 +31,9 @@ class MainActivity : ComponentActivity() {
             val appState = rememberApplicationState()
             appState.uiController.setSystemBarsColor(Color.Transparent, darkIcons = true)
             appState.uiController.setNavigationBarColor(Color.Transparent)
+            val navBackStackEntry by appState.navController.currentBackStackEntryAsState()
             CompileerrorTheme {
+                ManageBottomBarState(navBackStackEntry, appState)
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = Color.White

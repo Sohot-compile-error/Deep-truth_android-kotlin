@@ -3,7 +3,6 @@ package kau.sohothackathon.compileerror.ui.splash
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -15,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import kau.sohothackathon.compileerror.R
 import kau.sohothackathon.compileerror.ui.model.ApplicationState
-import kau.sohothackathon.compileerror.util.Constants
+import kau.sohothackathon.compileerror.util.Constants.MAIN_GRAPH
 import kau.sohothackathon.compileerror.util.Constants.ONBOARD_GRAPH
 import kau.sohothackathon.compileerror.util.Constants.SPLASH_ROUTE
 import kotlinx.coroutines.delay
@@ -31,17 +30,17 @@ fun SplashScreen(appState: ApplicationState) {
         }
     }
 
-    fun navigateToAddress() {
-        appState.navController.navigate(Constants.ADDRESS_GRAPH) {
-            popUpTo(ONBOARD_GRAPH) {
+    fun navigateToMainGraph() {
+        appState.navController.navigate(MAIN_GRAPH) {
+            popUpTo(SPLASH_ROUTE) {
                 inclusive = true
             }
         }
     }
 
     LaunchedEffect(key1 = Unit) {
-        delay(1500L)
-        navigateToAddress()
+        delay(500L)
+        navigateToMainGraph()
     }
 
     Box(

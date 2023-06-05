@@ -1,6 +1,7 @@
 package kau.sohothackathon.compileerror.ui.model
 
 import androidx.compose.material.ScaffoldState
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.SystemUiController
@@ -12,6 +13,7 @@ class ApplicationState(
     val navController: NavHostController,
     val scaffoldState: ScaffoldState,
     val uiController: SystemUiController,
+    val bottomBarState: MutableState<Boolean>,
     private val coroutineScope: CoroutineScope,
 ) {
 

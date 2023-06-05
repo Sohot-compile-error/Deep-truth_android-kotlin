@@ -23,9 +23,11 @@ import kau.sohothackathon.compileerror.util.Constants.VOICE_CALL_ROUTE
 import kotlinx.coroutines.launch
 
 @Composable
-fun AddressScreen(appState: ApplicationState) {
+fun AddressScreen(
+    appState: ApplicationState,
+    viewModel: MainViewModel = hiltViewModel(),
+) {
 
-    val viewModel: AddressViewModel = hiltViewModel()
     val context = LocalContext.current
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
     val scope = rememberCoroutineScope()
@@ -43,7 +45,8 @@ fun AddressScreen(appState: ApplicationState) {
     BottomSheetScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(Gray),
+            .background(Gray)
+            .navigationBarsPadding(),
         sheetPeekHeight = 0.dp, // 바텀 네비게이션 바
         sheetShape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
         scaffoldState = bottomSheetScaffoldState,
@@ -60,10 +63,9 @@ fun AddressScreen(appState: ApplicationState) {
             modifier = Modifier
                 .fillMaxSize()
                 .statusBarsPadding()
+                .navigationBarsPadding()
         ) {
-
             if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
-
                 DefaultAddressContainer(
                     search = viewModel.search.value,
                     updateSearch = viewModel::updateSearch,
@@ -75,7 +77,8 @@ fun AddressScreen(appState: ApplicationState) {
                 FloatingActionButton(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
-                        .padding(20.dp, 40.dp), backgroundColor = Gray, onClick = {
+                        .navigationBarsPadding()
+                        .padding(20.dp, 80.dp), backgroundColor = Gray, onClick = {
                         scope.launch {
                             bottomSheetScaffoldState.bottomSheetState.expand()
                         }
