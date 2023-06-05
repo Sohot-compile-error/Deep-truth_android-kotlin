@@ -1,6 +1,7 @@
 package kau.sohothackathon.compileerror.ui.file
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -23,6 +24,8 @@ import kau.sohothackathon.compileerror.domain.model.MediaType
 import kau.sohothackathon.compileerror.ui.MainViewModel
 import kau.sohothackathon.compileerror.ui.model.ApplicationState
 import kau.sohothackathon.compileerror.ui.theme.DEEP_TRUTH_BLUE
+import kau.sohothackathon.compileerror.util.Constants
+import kau.sohothackathon.compileerror.util.Constants.AUDIO_PLAY_ROUTE
 
 
 @Composable
@@ -58,10 +61,14 @@ fun FileScreen(appState: ApplicationState, viewModel: MainViewModel) {
             items(viewModel.mediaFiles.value) {
                 Column(
                     modifier = Modifier
-                        .weight(1f),
+                        .weight(1f)
+                        .clickable {
+                            appState.navController.navigate(
+                                "${AUDIO_PLAY_ROUTE}?name=${it.name}&mediaType=${it.mediaType}&contentUri=${it.contrntUri.toString()}",
+                            )
+                        },
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()

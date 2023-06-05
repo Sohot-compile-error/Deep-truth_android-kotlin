@@ -20,6 +20,7 @@ class MainViewModel @Inject constructor(
     private val fileRepository: FileRepository
 ) : ViewModel() {
 
+    /** 주소록 화면 */
     val addresses = mutableStateListOf<Address>()
     private val _filteredAddresses = mutableStateOf(emptyList<Address>())
     val filteredAddresses: State<List<Address>> get() = _filteredAddresses
@@ -30,6 +31,7 @@ class MainViewModel @Inject constructor(
     private val _phoneSearch = mutableStateOf("")
     val phoneSearch: State<String> get() = _phoneSearch
 
+    /** 파일 화면 */
     private val _mediaFiles = mutableStateOf(emptyList<MediaFile>())
     val mediaFiles: State<List<MediaFile>> get() = _mediaFiles
 
@@ -70,5 +72,13 @@ class MainViewModel @Inject constructor(
                     it.phone.contains(query, ignoreCase = true)
         }
         _search.value = query
+    }
+
+    fun playAudio(contrntUri: String) {
+
+    }
+
+    fun stopAudio() {
+
     }
 }

@@ -5,14 +5,18 @@ import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navArgument
 import kau.sohothackathon.compileerror.ui.address.AddressScreen
+import kau.sohothackathon.compileerror.ui.file.AudioPlayScreen
 import kau.sohothackathon.compileerror.ui.file.FileScreen
 import kau.sohothackathon.compileerror.ui.model.ApplicationState
 import kau.sohothackathon.compileerror.ui.vedio.VedioCallScreen
 import kau.sohothackathon.compileerror.ui.voice.VoiceCallScreen
 import kau.sohothackathon.compileerror.util.Constants.ADDRESS_ROUTE
+import kau.sohothackathon.compileerror.util.Constants.AUDIO_PLAY_ROUTE
 import kau.sohothackathon.compileerror.util.Constants.FILE_ROUTE
 import kau.sohothackathon.compileerror.util.Constants.MAIN_GRAPH
 import kau.sohothackathon.compileerror.util.Constants.VIDEO_CALL_ROUTE
@@ -37,6 +41,32 @@ fun NavGraphBuilder.mainGraph(appState: ApplicationState) {
         composable(FILE_ROUTE) { backStackentry ->
             val backEntry = rememberNavControllerBackEntry(backStackentry, appState, MAIN_GRAPH)
             FileScreen(appState, hiltViewModel(backEntry))
+        }
+        composable(
+            route = "${AUDIO_PLAY_ROUTE}?name={name}&mediaType={mediaType}&contentUri={contentUri}",
+            arguments = listOf(
+                navArgument("name") {
+                    type = NavType.StringType
+                },
+                navArgument("mediaType") {
+                    type = NavType.StringType
+                },
+                navArgument("contentUri") {
+                    type = NavType.StringType
+                })
+        ) {
+            val name = it.arguments?.getString("name")
+            val mediaType = it.arguments?.getString("mediaType")
+            val contrntUri = it.arguments?.getString("contentUri")
+
+            val backEntry = rememberNavControllerBackEntry(it, appState, MAIN_GRAPH)
+            AudioPlayScreen(
+                appState,
+                hiltViewModel(backEntry),
+                name ?: "",
+                mediaType ?: "",
+                contrntUri ?: ""
+            )
         }
 
     }

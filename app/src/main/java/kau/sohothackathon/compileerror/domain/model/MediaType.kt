@@ -1,5 +1,7 @@
 package kau.sohothackathon.compileerror.domain.model
 
-enum class MediaType {
-    VIDEO, AUDIO;
+enum class MediaType(
+    val value: String
+) {
+    VIDEO("video"), AUDIO("audio");
 }
