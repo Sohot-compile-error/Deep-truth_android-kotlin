@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kau.sohothackathon.compileerror.R
+import kau.sohothackathon.compileerror.ui.MainViewModel
 import kau.sohothackathon.compileerror.ui.model.ApplicationState
 import kau.sohothackathon.compileerror.ui.theme.*
 import kau.sohothackathon.compileerror.util.Constants.VIDEO_CALL_ROUTE

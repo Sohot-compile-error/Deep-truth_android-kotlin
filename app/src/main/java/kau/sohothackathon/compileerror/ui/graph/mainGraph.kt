@@ -36,7 +36,7 @@ fun NavGraphBuilder.mainGraph(appState: ApplicationState) {
         }
         composable(FILE_ROUTE) { backStackentry ->
             val backEntry = rememberNavControllerBackEntry(backStackentry, appState, MAIN_GRAPH)
-            FileScreen()
+            FileScreen(appState, hiltViewModel(backEntry))
         }
 
     }

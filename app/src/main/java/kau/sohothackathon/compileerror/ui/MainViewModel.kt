@@ -1,19 +1,23 @@
-package kau.sohothackathon.compileerror.ui.address
+package kau.sohothackathon.compileerror.ui
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kau.sohothackathon.compileerror.data.model.Address
 import kau.sohothackathon.compileerror.domain.AddressRepository
+import kau.sohothackathon.compileerror.domain.FileRepository
+import kau.sohothackathon.compileerror.domain.model.MediaFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val addressRepository: AddressRepository
+    private val addressRepository: AddressRepository,
+    private val fileRepository: FileRepository
 ) : ViewModel() {
 
     val addresses = mutableStateListOf<Address>()
@@ -26,10 +30,19 @@ class MainViewModel @Inject constructor(
     private val _phoneSearch = mutableStateOf("")
     val phoneSearch: State<String> get() = _phoneSearch
 
+    private val _mediaFiles = mutableStateOf(emptyList<MediaFile>())
+    val mediaFiles: State<List<MediaFile>> get() = _mediaFiles
+
     fun getAllContacts(context: Context) = viewModelScope.launch(Dispatchers.Default) {
         if (addresses.isEmpty()) {
             addresses.clear()
             addresses.addAll(addressRepository.fetchAllContacts(context).sortedBy { it.name })
+        }
+    }
+
+    fun getAllMediafiles() = viewModelScope.launch(Dispatchers.Default) {
+        if (_mediaFiles.value.isEmpty()) {
+            _mediaFiles.value = fileRepository.fetchAllMediaFiles()
         }
     }
 

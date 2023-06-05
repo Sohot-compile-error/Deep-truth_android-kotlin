@@ -5,10 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Surface
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,10 +52,17 @@ fun BottomBar(
                                     (if (isSelected) screen.selectedIcon else screen.unselectedIcon),
                                 ),
                                 contentDescription = null,
+                                tint = if (isSelected) Color(0xFF55A1F8) else Color(0xFFBDBDBD),
                             )
                         }
                     },
-                    label = null,
+                    label = {
+                        Text(
+                            text = screen.title,
+                            color = if (isSelected) Color(0xFF55A1F8) else Color(0xFFBDBDBD),
+                            style = MaterialTheme.typography.caption,
+                        )
+                    },
                     selected = isSelected,
                     onClick = {
                         appState.navController.navigate(screen.route) {
