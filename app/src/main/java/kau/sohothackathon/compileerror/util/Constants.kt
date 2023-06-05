@@ -9,6 +9,7 @@ object Constants {
     const val VIDEO_CALL_ROUTE = "nav-video-call"
     const val FILE_ROUTE = "nav-file-route"
     const val AUDIO_PLAY_ROUTE = "nav-audio-play"
+    const val VIDEO_PLAY_ROUTE = "nav-video-play"
 
     // Graphs
     const val ADDRESS_GRAPH = "address_graph"

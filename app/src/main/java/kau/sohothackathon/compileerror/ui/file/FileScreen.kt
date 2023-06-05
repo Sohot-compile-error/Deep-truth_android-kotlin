@@ -3,14 +3,11 @@ package kau.sohothackathon.compileerror.ui.file
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
@@ -33,14 +30,13 @@ import androidx.compose.ui.unit.sp
 import kau.sohothackathon.compileerror.R
 import kau.sohothackathon.compileerror.domain.model.MediaType
 import kau.sohothackathon.compileerror.ui.MainViewModel
-import kau.sohothackathon.compileerror.ui.address.AddressItem
 import kau.sohothackathon.compileerror.ui.model.ApplicationState
 import kau.sohothackathon.compileerror.ui.theme.Black
 import kau.sohothackathon.compileerror.ui.theme.DEEP_TRUTH_BLUE
 import kau.sohothackathon.compileerror.ui.theme.Main
 import kau.sohothackathon.compileerror.ui.theme.SubGray
-import kau.sohothackathon.compileerror.util.Constants
 import kau.sohothackathon.compileerror.util.Constants.AUDIO_PLAY_ROUTE
+import kau.sohothackathon.compileerror.util.Constants.VIDEO_PLAY_ROUTE
 
 
 @Composable
@@ -129,9 +125,15 @@ fun FileScreen(appState: ApplicationState, viewModel: MainViewModel) {
                         modifier = Modifier
                             .weight(1f)
                             .clickable {
-                                appState.navController.navigate(
-                                    "${AUDIO_PLAY_ROUTE}?name=${it.name}&mediaType=${it.mediaType}&contentUri=${it.contrntUri.toString()}",
-                                )
+                                if (it.mediaType == MediaType.AUDIO) {
+                                    appState.navController.navigate(
+                                        "${AUDIO_PLAY_ROUTE}?name=${it.name}&mediaType=${it.mediaType}&contentUri=${it.contrntUri.toString()}",
+                                    )
+                                } else {
+                                    appState.navController.navigate(
+                                        "${VIDEO_PLAY_ROUTE}?name=${it.name}&mediaType=${it.mediaType}&contentUri=${it.contrntUri.toString()}",
+                                    )
+                                }
                             },
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -237,5 +239,4 @@ fun FileSearchBar(
                 }
             })
     }
-
 }
