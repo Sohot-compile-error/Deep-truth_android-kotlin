@@ -1,5 +1,7 @@
 package kau.sohothackathon.compileerror.ui.file
 
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,17 +16,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import kau.sohothackathon.compileerror.R
 import kau.sohothackathon.compileerror.ui.MainViewModel
 import kau.sohothackathon.compileerror.ui.file.model.JudegementStatus
 import kau.sohothackathon.compileerror.ui.model.ApplicationState
 import kau.sohothackathon.compileerror.ui.theme.DEEP_TRUTH_BLUE
+import kau.sohothackathon.compileerror.util.checkDeepTruth
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 
 @Composable
@@ -33,24 +40,53 @@ fun AudioPlayScreen(
     viewModel: MainViewModel,
     name: String = "",
     mediaType: String = "",
-    contrntUri: String = ""
+    contentUri: String = ""
 ) {
 
     var isPlay by remember {
-        mutableStateOf(false)
+        mutableStateOf(true)
     }
     var status by remember {
-        mutableStateOf(JudegementStatus.NOT_START)
+        mutableStateOf(JudegementStatus.PROGRESS)
+    }
+    var probability by remember {
+        mutableStateOf(70.0f)
+    }
+
+    val context = LocalContext.current
+    val mediaPlayer = viewModel.mediaPlayer
+    val scope = rememberCoroutineScope()
+
+    DisposableEffect(key1 = Unit) {
+        mediaPlayer.apply {
+            reset()
+            setDataSource(context, contentUri.toUri())
+            prepare()
+            setOnCompletionListener {
+                scope.launch {
+                    delay(Random.nextInt(1000, 3000) + 2000L)
+                    probability = Random.nextInt(-10, 10).toFloat() + 70f
+                    status = if (checkDeepTruth(name, mediaType, contentUri)) {
+                        JudegementStatus.ON_ERROR
+                    } else {
+                        JudegementStatus.ON_SUCCESS
+                    }
+                }
+                isPlay = false
+            }
+        }
+        onDispose {
+            mediaPlayer.stop()
+        }
     }
 
     LaunchedEffect(key1 = isPlay) {
         if (isPlay) {
+            mediaPlayer.seekTo(0)
+            mediaPlayer.start()
             status = JudegementStatus.PROGRESS
-            delay(4000L)
-            status = JudegementStatus.ON_ERROR
         } else {
-            viewModel.stopAudio()
-            status = JudegementStatus.NOT_START
+            mediaPlayer.pause()
         }
     }
 
@@ -104,7 +140,7 @@ fun AudioPlayScreen(
             textAlign = TextAlign.Center
         )
         Text(
-            text = "contrntUri : $contrntUri",
+            text = "contrntUri : $contentUri",
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier.fillMaxWidth(),
@@ -150,7 +186,7 @@ fun AudioPlayScreen(
                         color = Color.Red
                     )
                     Text(
-                        text = "79.4%",
+                        text = "${probability}%",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Normal,
                         modifier = Modifier.fillMaxWidth(),
@@ -173,7 +209,7 @@ fun AudioPlayScreen(
                         fontWeight = FontWeight.Normal,
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
-                        color = Color.Green
+                        color = DEEP_TRUTH_BLUE
                     )
                     Icon(
                         painter = painterResource(id = R.drawable.ic_baseline_tag_faces_24),
@@ -201,3 +237,4 @@ fun AudioPlayScreen(
 
     }
 }
+

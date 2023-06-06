@@ -81,9 +81,15 @@ fun FileScreen(appState: ApplicationState, viewModel: MainViewModel) {
                         modifier = Modifier
                             .weight(1f)
                             .clickable {
-                                appState.navController.navigate(
-                                    "${AUDIO_PLAY_ROUTE}?name=${it.name}&mediaType=${it.mediaType}&contentUri=${it.contrntUri.toString()}",
-                                )
+                                if (it.mediaType == MediaType.AUDIO) {
+                                    appState.navController.navigate(
+                                        "${AUDIO_PLAY_ROUTE}?name=${it.name}&mediaType=${it.mediaType}&contentUri=${it.contrntUri}",
+                                    )
+                                } else {
+                                    appState.navController.navigate(
+                                        "${VIDEO_PLAY_ROUTE}?name=${it.name}&mediaType=${it.mediaType}&contentUri=${it.contrntUri}",
+                                    )
+                                }
                             },
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {

@@ -1,8 +1,11 @@
 package kau.sohothackathon.compileerror.ui
 
 import android.content.Context
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.util.Log
 import androidx.compose.runtime.*
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,6 +41,14 @@ class MainViewModel @Inject constructor(
     val filteredMediaFiles: State<List<MediaFile>> get() = _filteredMediaFiles
     private val _mediaSearch = mutableStateOf("")
     val mediaSearch: State<String> get() = _mediaSearch
+
+    val mediaPlayer = MediaPlayer().apply {
+        setAudioAttributes(
+            AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build()
+        )
+    }
 
     fun getAllContacts(context: Context) = viewModelScope.launch(Dispatchers.Default) {
         if (addresses.isEmpty()) {
